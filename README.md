@@ -1,43 +1,46 @@
 
-[![Build](https://img.shields.io/github/actions/workflow/status/mikependon/RepoDB/build-sqlsvr.yml?logo=github&label=build&style=for-the-badge)](https://github.com/mikependon/RepoDB/actions/workflows/build-sqlsvr.yml)
-[![Version](https://img.shields.io/nuget/v/RepoDb?&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/RepoDb)
-[![MsTeams](https://img.shields.io/badge/chat-microsoft%20teams-6264A7?&logo=microsoftteams&logoColor=white&style=for-the-badge)](https://teams.live.com/l/community/FEAIJp5q65nfiiWsQ)
+<div align="center">
+    <image src="logo.png" style="width:256px;" />
+    <br/>
+    <span style="font-size:16px;font-weight:bold;">A production-ready data access platform for .NET applications.</span>
+</div>
 
-# RepoDB — a production-ready data access platform for .NET applications.
+-----
 
 RepoDB is a high-performance data productivity platform for .NET developers. At its core is the popular hybrid-ORM library for .NET.
 
-RepoDB is best for simplifying data layer implementations, processing millions of records, and integrating multiple data sources. It provides the flexibility to work the way you want—all through the [IDbConnection](https://learn.microsoft.com/en-us/dotnet/api/system.data.idbconnection) interface.
 
-Write raw SQL when you need absolute control, or use the fluent APIs for more productivity. You can switch seamlessly between both approaches without sacrificing performance or maintainability.
+It provides the flexibility to work the way you want — all through the [IDbConnection](https://learn.microsoft.com/en-us/dotnet/api/system.data.idbconnection) interface. Write raw SQL when you need absolute control, or use the fluent APIs for more productivity, and switch seamlessly between both without sacrificing performance or maintainability.
 
-## Easy to Use
+## Why RepoDB?
 
-Every operation is an extension method of [IDbConnection](https://learn.microsoft.com/en-us/dotnet/api/system.data.idbconnection) interface. Simply open a connection and you can start working with your database — no need for repositories to scaffold, no context classes, no code generation.
+RepoDB solves a complex problem in the data access space: making bulk operations simple. It is designed to efficiently move millions of records across different database providers. Imagine migrating massive datasets from legacy databases to modern, cloud-native platforms — efficiently, reliably, and with high performance.
 
-```csharp
-using (var connection = new SqlConnection(ConnectionString))
-{
-    var id = connection.Insert<Customer>(new Customer { FirstName = "John", LastName = "Doe" }); // Insert
-    var customer = connection.Query<Customer>(c => c.Id == id).FirstOrDefault(); // Query
-    customer.LastName = "Smith"; // Set
-    connection.Update<Customer>(customer); // Update
-    connection.Delete<Customer>(10045); // or connection.Delete<Customer>(customer); // Delete
-}
-```
+It also addresses a common tension in data access: choosing between the raw performance and control of manual ADO.NET and the productivity of a full-featured ORM. RepoDB brings both together — without forcing a trade-off.
 
-Moving million of rows at once? Add the `.BulkOperations` package for your provider (e.g. [RepoDb.SqlServer.BulkOperations](RepoDb.Extensions/RepoDb.SqlServer.BulkOperations)) and use the same connection:
+### As a Hybrid-ORM
 
-```csharp
-using (var connection = new SqlConnection(ConnectionString))
-{
-    var customers = GetCustomers(); // thousands or millions of rows
-    connection.BulkInsert<Customer>(customers);
-    connection.BulkMerge<Customer>(customers, qualifiers: e => new { e.LastName, e.DateOfBirth });
-}
-```
+It stays close to the metal while remaining easy to use:
 
-You can do this in all supported DB providers.
+| Feature | Description |
+|---|---|
+| **👌 Easy to Use** | All operations are extension methods on `IDbConnection`. Open a connection and you're ready to go. |
+| **🚀 High Performance** | Compiled expressions are cached and reused. RepoDB understands your schema to generate the most efficient execution path ahead of time. |
+| **🧠 Memory Efficient** | Object properties, execution contexts, mappings, and SQL statements are extracted once and reused throughout the lifetime of your application. |
+| **🔀 Hybrid** | Use fluent methods for everyday CRUD, drop down to raw SQL for complex queries, or mix both — all within the same connection. |
+| **🏆 Battle-Tested** | Backed by thousands of unit and integration tests, and used in production systems worldwide. |
+| **🆓 Always Free** | Apache 2.0 licensed, forever open source. |
+
+### As a Productivity Platform
+
+It goes beyond the ORM with enterprise-grade capabilities for building, operating, and scaling with confidence:
+
+| Feature | Description |
+|---|---|
+| **📦 Bulk Operations** | High-performance bulk inserts, updates, merges, and deletes built for demanding production workloads. |
+| **🔄 Data Replication** | Scalable data movement and synchronization across multiple database platforms. |
+| **📊 Telemetry** | Immediate visibility into execution times, failures, and application behavior, with minimal configuration. |
+| **🗄️ Multi-DB Support** | A growing range of relational database providers with a consistent development experience. |
 
 ## Packages and Build Status
 
@@ -54,35 +57,13 @@ You can do this in all supported DB providers.
 | [MySQL (Bulk)](https://www.nuget.org/packages/RepoDb.MySql.BulkOperations) 🆕 | [![](https://img.shields.io/nuget/v/RepoDb.MySql.BulkOperations?&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/RepoDb.MySql.BulkOperations) | [![](https://img.shields.io/nuget/dt/RepoDb.MySql.BulkOperations?&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/RepoDb.MySql.BulkOperations) | [![Build](https://img.shields.io/github/actions/workflow/status/mikependon/RepoDB/build-mysql-bulk.yml?logo=github&label=build&style=for-the-badge)](https://github.com/mikependon/RepoDB/actions/workflows/build-mysql-bulk.yml) |
 | [MySQL Connector](https://www.nuget.org/packages/RepoDb.MySqlConnector) | [![](https://img.shields.io/nuget/v/RepoDb.MySqlConnector?&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/RepoDb.MySqlConnector) | [![](https://img.shields.io/nuget/dt/RepoDb.MySqlConnector?&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/RepoDb.MySqlConnector) | [![Build](https://img.shields.io/github/actions/workflow/status/mikependon/RepoDB/build-mysqlconnector.yml?logo=github&label=build&style=for-the-badge)](https://github.com/mikependon/RepoDB/actions/workflows/build-mysqlconnector.yml) |
 | [MySQL Connector (Bulk)](https://www.nuget.org/packages/RepoDb.MySqlConnector.BulkOperations) 🆕 | [![](https://img.shields.io/nuget/v/RepoDb.MySqlConnector.BulkOperations?&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/RepoDb.MySqlConnector.BulkOperations) | [![](https://img.shields.io/nuget/dt/RepoDb.MySqlConnector.BulkOperations?&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/RepoDb.MySqlConnector.BulkOperations) | [![Build](https://img.shields.io/github/actions/workflow/status/mikependon/RepoDB/build-mysqlconnector-bulk.yml?logo=github&label=build&style=for-the-badge)](https://github.com/mikependon/RepoDB/actions/workflows/build-mysqlconnector-bulk.yml) |
+| [MariaDB](https://www.nuget.org/packages/RepoDb.MariaDb) 🆕 | [![](https://img.shields.io/nuget/v/RepoDb.MariaDb?&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/RepoDb.MariaDb) | [![](https://img.shields.io/nuget/dt/RepoDb.MariaDb?&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/RepoDb.MariaDb) | [![Build](https://img.shields.io/github/actions/workflow/status/mikependon/RepoDB/build-mariadb.yml?logo=github&label=build&style=for-the-badge)](https://github.com/mikependon/RepoDB/actions/workflows/build-mariadb.yml) |
+| [MariaDB (Bulk)](https://www.nuget.org/packages/RepoDb.MariaDb.BulkOperations) 🆕 | [![](https://img.shields.io/nuget/v/RepoDb.MariaDb.BulkOperations?&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/RepoDb.MariaDb.BulkOperations) | [![](https://img.shields.io/nuget/dt/RepoDb.MariaDb.BulkOperations?&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/RepoDb.MariaDb.BulkOperations) | [![Build](https://img.shields.io/github/actions/workflow/status/mikependon/RepoDB/build-mariadb-bulk.yml?logo=github&label=build&style=for-the-badge)](https://github.com/mikependon/RepoDB/actions/workflows/build-mariadb-bulk.yml) |
 | [IBM DB2](https://www.nuget.org/packages/RepoDb.Db2) 🆕 | [![](https://img.shields.io/nuget/v/RepoDb.Db2?&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/RepoDb.Db2) | [![](https://img.shields.io/nuget/dt/RepoDb.Db2?&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/RepoDb.Db2) | [![Build](https://img.shields.io/github/actions/workflow/status/mikependon/RepoDB/build-db2.yml?logo=github&label=build&style=for-the-badge)](https://github.com/mikependon/RepoDB/actions/workflows/build-db2.yml) |
 | [IBM DB2 (Bulk)](https://www.nuget.org/packages/RepoDb.Db2.BulkOperations) 🆕 | [![](https://img.shields.io/nuget/v/RepoDb.Db2.BulkOperations?&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/RepoDb.Db2.BulkOperations) | [![](https://img.shields.io/nuget/dt/RepoDb.Db2.BulkOperations?&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/RepoDb.Db2.BulkOperations) | [![Build](https://img.shields.io/github/actions/workflow/status/mikependon/RepoDB/build-db2-bulk.yml?logo=github&label=build&style=for-the-badge)](https://github.com/mikependon/RepoDB/actions/workflows/build-db2-bulk.yml) |
 | [SQLite](https://www.nuget.org/packages/RepoDb.Sqlite.Microsoft) | [![](https://img.shields.io/nuget/v/RepoDb.Sqlite.Microsoft?&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/RepoDb.Sqlite.Microsoft) | [![](https://img.shields.io/nuget/dt/RepoDb.Sqlite.Microsoft?&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/RepoDb.Sqlite.Microsoft) | [![Build](https://img.shields.io/github/actions/workflow/status/mikependon/RepoDB/build-sqlite-microsoft.yml?logo=github&label=build&style=for-the-badge)](https://github.com/mikependon/RepoDB/actions/workflows/build-sqlite-microsoft.yml) |
 | [Telemetry (Core)](https://www.nuget.org/packages/RepoDb.Telemetry.Core) 🆕 | [![](https://img.shields.io/nuget/v/RepoDb.Telemetry.Core?&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/RepoDb.Telemetry.Core) | [![](https://img.shields.io/nuget/dt/RepoDb.Telemetry.Core?&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/RepoDb.Telemetry.Core) | [![Build](https://img.shields.io/github/actions/workflow/status/mikependon/RepoDB/build-telemetry-core.yml?logo=github&label=build&style=for-the-badge)](https://github.com/mikependon/RepoDB/actions/workflows/build-telemetry-core.yml) |
 | [Telemetry (Default)](https://www.nuget.org/packages/RepoDb.Telemetry.Default) 🆕 | [![](https://img.shields.io/nuget/v/RepoDb.Telemetry.Default?&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/RepoDb.Telemetry.Default) | [![](https://img.shields.io/nuget/dt/RepoDb.Telemetry.Default?&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/RepoDb.Telemetry.Default) | [![Build](https://img.shields.io/github/actions/workflow/status/mikependon/RepoDB/build-telemetry-default.yml?logo=github&label=build&style=for-the-badge)](https://github.com/mikependon/RepoDB/actions/workflows/build-telemetry-default.yml) |
-
-## Why RepoDB?
-
-As a hybrid ORM, RepoDB gives you the raw performance and control of manual data access with the convenience of a full-featured library.
-
-| Feature | Description |
-|---|---|
-| **👌 Easy to Use** | All operations are extension methods on `IDbConnection`. Open a connection and you're ready to go. |
-| **🚀 High Performance** | Compiled expressions are cached and reused. RepoDB understands your schema to generate the most efficient execution path ahead of time. |
-| **🧠 Memory Efficient** | Object properties, execution contexts, mappings, and SQL statements are extracted once and reused throughout the lifetime of your application. |
-| **🔀 Hybrid by Design** | Use fluent methods for everyday CRUD, drop down to raw SQL for complex queries, or mix both — all within the same connection. |
-| **🏆 Battle-Tested** | Backed by thousands of unit and integration tests, and used in production systems worldwide. |
-| **🆓 Always Free** | Apache 2.0 licensed, forever open source. |
-
-As a productivity platform, RepoDB goes beyond the ORM with enterprise-grade capabilities that help developers build, operate, and scale with confidence.
-
-| Feature | Description |
-|---|---|
-| **🏢 Enterprise-Grade Bulk Operations** | Perform high-performance bulk inserts, updates, merges, and deletes designed for demanding production workloads. |
-| **🔄 Data Replication & Integration** *(Planned)* | Build scalable data movement and synchronization solutions across multiple database platforms. |
-| **📊 Default Telemetry with Insights** | Gain immediate visibility into database operations, execution times, failures, and application behavior with minimal configuration. |
-| **📚 Multi-Database Ecosystem** | Support a growing range of relational database providers with a consistent development experience. |
-| **🏢 Enterprise Ready** | Designed for performance, scalability, observability, and long-term maintainability. |
-| **🤖 AI-Ready Architecture** | Built to integrate naturally with AI-assisted development, intelligent analytics, and future automation capabilities. |
 
 ## Get Started
 
@@ -92,6 +73,7 @@ Choose your database and follow the quick-start guide:
 - [Oracle](http://repodb.net/tutorial/get-started-oracle)
 - [PostgreSQL](http://repodb.net/tutorial/get-started-postgresql)
 - [MySQL](http://repodb.net/tutorial/get-started-mysql)
+- [MariaDB](http://repodb.net/tutorial/get-started-mariadb)
 - [Db2](http://repodb.net/tutorial/get-started-db2)
 - [SQLite](http://repodb.net/tutorial/get-started-sqlite)
 
@@ -142,11 +124,11 @@ RepoDB sits between a micro-ORM and a full ORM. Each tool below makes different 
 
 Dapper and Entity Framework are both excellent, mature tools — this reflects design tradeoffs, not a ranking.
 
-## Telemetry 🆕
+## Telemetry
 
 RepoDB includes opt-in, drop-in telemetry via [RepoDb.Telemetry.Default](RepoDb.Telemetry.Default/README.md). Enable it once at startup and every operation (Insert, Query, Update, Delete, etc.) is captured and published to your insights collector automatically — no custom `ITrace` required.
 
-<img src="https://raw.githubusercontent.com/mikependon/RepoDB.Blogs.Resources/refs/heads/main/images/repodb-insights-default-telemetry-banner.png" />
+<img src="https://raw.githubusercontent.com/mikependon/RepoDB.Blogs.Resources/refs/heads/main/images/repodb-insights-default-telemetry-banner.png" style="max-width:768px;" />
 
 It comes with great and simple dashboards visualization.
 
