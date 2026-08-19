@@ -41,7 +41,9 @@ Or visit the [installation](http://repodb.net/tutorial/installation) page for mo
 Initialize the bootstrapper once at application startup:
 
 ```csharp
-RepoDb.MySqlBootstrap.Initialize();
+GlobalConfiguration
+    .Setup()
+    .UseMySql();
 ```
 
 Then use any RepoDB operation directly on your `MySqlConnection`:
@@ -120,3 +122,11 @@ using (var connection = new MySqlConnection(ConnectionString))
 ```
 
 Visit the [get-started](http://repodb.net/tutorial/get-started-mysql) page for the full MySQL guide.
+
+## License
+
+[Apache License 2.0](https://apache.org/licenses/LICENSE-2.0.html) — Copyright © 2019 [Michael Camara Pendon](https://x.com/mike_pendon) 
+
+This project depends on Oracle's MySQL Connector/NET (`MySql.Data`),
+which is separately licensed under GPL-2.0 with the Universal FOSS
+Exception, Version 1.0.
